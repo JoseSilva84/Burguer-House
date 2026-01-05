@@ -428,24 +428,36 @@ body {
 ========================= */
 
 @media (max-width: 1024px) {
+    
+    .linkBurguer {
+    font-size:20px;
+    font-weight: 500;
+    }
+    
+    .btnPecaAgora {
+        cursor: pointer;
+        width: 120px;
+        height: 30px;
+        text-align: center;
+    }
 
     .hero {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 40px;
     }
-
+    
     .hero-buttons,
     .hero-stats {
         justify-content: center;
         flex-wrap: wrap;
     }
-
+    
     .sobre {
         grid-template-columns: 1fr;
         text-align: center;
     }
-
+    
     footer {
         grid-template-columns: repeat(2, 1fr);
         text-align: center;
@@ -453,10 +465,22 @@ body {
 }
 
 /* =========================
-   MOBILE
+MOBILE
 ========================= */
 
 @media (max-width: 768px) {
+    
+    .linkBurguer {
+    font-size:18px;
+    font-weight: 400;
+    }
+
+    .btnPecaAgora {
+        cursor: pointer;
+        width: 110px;
+        height: 20px;
+        text-align: center;
+    }
 
     header {
         flex-direction: row;
@@ -529,6 +553,17 @@ body {
 ========================= */
 
 @media (max-width: 480px) {
+    
+    .linkBurguer {
+    font-size:16px;
+    font-weight: 300;
+    }
+    .btnPecaAgora {
+        cursor: pointer;
+        width: 80px;
+        height: 20px;
+        text-align: center;
+    }
 
     .hero h1 {
         font-size: 30px;
