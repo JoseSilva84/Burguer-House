@@ -591,3 +591,43 @@ MOBILE
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 360px) {
+    
+    .linkBurguer {
+        font-size:14px;
+        font-weight: 400;
+    }
+    .btnPecaAgora {
+        cursor: pointer;
+        width: 110px;
+        height: 40px;
+        text-align: center;
+        padding-top: 8px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero-stats strong {
+        font-size: 22px;
+    }
+
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .fab.fa-whatsapp {
+        font-size: 42px;
+        margin-top: 4px;
+        margin-left: 6px;
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+    }
+}
