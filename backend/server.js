@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import useRoutes from './routes/routes.js';
 
 dotenv.config();
 
@@ -8,21 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Seja bem-vindo à burgueria!');
-});
-
-app.post('/', (req, res) => {
-    res.send('Seja bem-vindo à burgueria!');
-});
-
-app.put('/', (req, res) => {
-    res.send('Seja bem-vindo à burgueria!');
-});
-
-app.delete('/', (req, res) => {
-    res.send('Seja bem-vindo à burgueria!');
-});
+app.use('/usuarios', useRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor conectado na porta ${PORT}`);
