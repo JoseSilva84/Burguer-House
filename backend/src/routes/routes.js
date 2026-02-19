@@ -3,9 +3,9 @@ import { createUser, deleteUser, getAllUser } from '../controllers/userControlle
 
 const router = express.Router();
 
-router.get('/cadastro', getAllUser);
+router.get('/todos', getAllUser);
 
-router.post('/todos', createUser);
+router.post('/cadastro', createUser);
 
 router.delete('/deletar', deleteUser);
 

@@ -1,10 +1,23 @@
 import User from '../models/User.js';
+import crypto from 'node:crypto';
 
 export const createUser = async (req, res) => {
-    
-    const user = await User.create(req.body);
-    res.status(200).json(user);
-};
+    try {
+        const userToCreate = {
+            id: crypto.randomUUID(),
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            adress: req.body.adress
+        }
+        
+            const user = await User.create(userToCreate);
+            
+            res.status(201).json(user);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 
 export const getAllUser = async (req, res) => {
     
