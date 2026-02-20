@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Login - Burguer House</title>
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="linkBurguer">🍔 Burguer House</a>
+        <nav id="nav-menu">
+            <a href="index.html">Início</a>
+            <a href="index.html#cardapio">Cardápio</a>
+            <a href="index.html#sobre">Sobre</a>
+            <a href="index.html#contato">Contato</a>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            ☰
+        </button>
+    </header>
+
+    <main class="login-page">
+        <section class="login-container">
+            <form class="login-form" id="login-form" action="/login" method="POST">
+                <h2>Faça login</h2>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" placeholder="Nome" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+
+                <label for="adress">Endereço</label>
+                <input type="text" id="adress" name="adress" placeholder="Endereço" required>
+
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="Senha" required>
+
+                <button type="submit" class="btnPecaAgora">Entrar</button>
+            </form>
+        </section>
+    </main>
+    <footer id="contato">
+        <section>
+            <h3>🍔Burguer House</h3>
+            <p>O melhor hambúrguer da cidade</p>
+        </section>
+
+        <section>
+            <h4>Horários</h3>
+                <p>Terça a Domingo das 18h às 23h</p>
+        </section>
+
+        <section>
+            <h4>Contato</h3>
+                <p>📞 (75) 992456130 <a href="https://maps.app.goo.gl/u2dyQYMMn5Nb8oro8" target="_blank"
+                        rel="noopener noreferrer" class="redesSociais">📍Rua 08 de Novembro, 565</a></p>
+        </section>
+
+        <section>
+            <h4>Redes Sociais</h4>
+            <a href="https://www.instagram.com/mmburger20/" class="redesSociais" target="_blank">Instagram</a>
+        </section>
+        <div class="copy">
+            <p>&copy; 2026 Todos os direitos reservados. Desenvolvido por:</p>
+            <a href="https://w.app/ao4v3w" target="_blank" class="redesSociais">José Silva</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
