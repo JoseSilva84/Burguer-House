@@ -61,6 +61,7 @@ html {
 .fab.fa-whatsapp:hover {
     filter: brightness(0.9);
     transform: translateY(-2px);
+    cursor: pointer;
 }
 
 .btn {

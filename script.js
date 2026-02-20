@@ -9,6 +9,8 @@ const phoneNumber = "5588996955889"; // Substitua pelo número real, incluindo c
 const contatoWhat = document.getElementById("contatoWhat");
 const contatoWhatbtn = document.getElementById("contatoWhatbtn");
 const contatoWhatpedir = document.getElementById("contatoWhatpedir");
+
+const linkredesSociais = document.querySelector(".linkredesSociais");
 const btnWhat = document.querySelectorAll(".btnWhat");
 
 if (contatoWhat) {
@@ -27,6 +29,17 @@ contatoWhatbtn.addEventListener("click", () => {
     window.open(
     `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
         "Olá! Gostaria de fazer o meu pedido.",
+    )}`,
+    "_blank",
+    );
+});
+};
+
+if (linkredesSociais) {
+linkredesSociais.addEventListener("click", () => {
+    window.open(
+    `https://wa.me/5575992456130?text=${encodeURIComponent(
+        "Olá! Gostaria de saber mais sobre seus serviços.",
     )}`,
     "_blank",
     );
