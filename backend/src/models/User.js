@@ -1,30 +1,46 @@
-import Sequelize, { Model } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 
 class User extends Model {
     static init(sequelize) {
-
         super.init(
-            
             {
+                id: {
+                    type: DataTypes.UUID,
+                    primaryKey: true,
+                    allowNull: false
+                },
                 name: {
-                    type: Sequelize.STRING,
+                    type: DataTypes.STRING,
                     allowNull: false
                 },
                 adress: {
-                    type: Sequelize.STRING,
+                    type: DataTypes.STRING,
                     allowNull: false
                 },
                 email: {
-                    type: Sequelize.STRING,
+                    type: DataTypes.STRING,
                     allowNull: false,
                     unique: true
                 },
+                password: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                }
             },
             {
-                sequelize
+                sequelize,
+                tableName: "users",
+                schema: "public",
+
+                // ISSO RESOLVE O ERRO
+                timestamps: true,
+                underscored: true,
+
+                // mapeia corretamente:
+                createdAt: "created_at",
+                updatedAt: "updated_at"
             }
         );
-
     }
 }
 

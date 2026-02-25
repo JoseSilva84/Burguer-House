@@ -249,6 +249,17 @@ header nav a:hover {
     margin-top: 10px;
 }
 
+.alt-action {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.alt-action a {
+    color: var(--primary);
+    font-weight: bold;
+}
+
 .hero-buttons {
     display: flex;
     gap: 15px;

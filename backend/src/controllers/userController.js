@@ -1,24 +1,30 @@
-import User from '../models/User.js';
 import crypto from 'node:crypto';
+import User from '../models/User.js';
 
 export const createUser = async (req, res) => {
+    // log incoming body for debugging
+    console.log('createUser body:', req.body);
+
+    const { name, email, password, adress } = req.body;
+    if (!name || !email || !adress || !password) {
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    }
+
     try {
         const userToCreate = {
             id: crypto.randomUUID(),
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            adress: req.body.adress
-        }
-        
-            const user = await User.create(userToCreate);
-            
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
+            name,
+            email,
+            adress,
+            password
+        };
 
+        const user = await User.create(userToCreate);
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 export const getAllUser = async (req, res) => {
     
     const user = await User.findAll();
@@ -39,4 +45,24 @@ export const deleteUser = async (req, res) => {
     }
     
     res.status(200).json({ message: "Usuário deletado com sucesso" });
+};
+
+// simples login usando nome + senha (sem hash para este protótipo)
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email e senha são obrigatórios" });
+    }
+
+    try {
+        const user = await User.findOne({ where: { email, password } });
+        if (!user) {
+            return res.status(401).json({ error: "Credenciais inválidas" });
+        }
+        // em um app real usaria JWT/sessão e não retornaria a senha
+        res.status(200).json({ message: "Login realizado com sucesso", user: { id: user.id, name: user.name, email: user.email } });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };

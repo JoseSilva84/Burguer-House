@@ -1,6 +1,6 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import cors from 'cors'
 
 dotenv.config();
 
@@ -16,7 +16,10 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+// parse JSON bodies (fetch requests)
 app.use(express.json());
+// also parse URL-encoded bodies so plain form POSTs work
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
