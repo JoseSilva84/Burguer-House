@@ -118,6 +118,16 @@ html {
     color: var(--primary);
 }
 
+.btnComprar {
+    width: 110px !important;
+}
+
+.botaoPedirComprar {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+}
+
 .pedirPeloWhat {
     background-color: #fff;
     color: var(--primary);

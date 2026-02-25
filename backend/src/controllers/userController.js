@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import User from '../models/User.js';
+import jwt from "jsonwebtoken";
 
 export const createUser = async (req, res) => {
     // log incoming body for debugging
@@ -51,29 +52,25 @@ export const deleteUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email e senha são obrigatórios" });
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+        return res.status(401).json({ error: "Usuário não encontrado" });
     }
 
-    try {
-        const user = await User.findOne({ where: { email } });
-
-        if (!user) {
-            return res.status(401).json({ error: "Usuário não encontrado" });
-        }
-
-        const passwordMatch = await user.checkPassword(password);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ error: "Senha inválida" });
-        }
-
-        res.status(200).json({
-            message: "Login realizado com sucesso",
-            user: { id: user.id, name: user.name, email: user.email }
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    const match = await user.checkPassword(password);
+    if (!match) {
+        return res.status(401).json({ error: "Senha inválida" });
     }
+
+    //gera o token
+    const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+    );
+
+    res.json({
+        token,
+        user: { id: user.id, name: user.name }
+    });
 };

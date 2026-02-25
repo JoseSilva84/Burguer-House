@@ -14,65 +14,67 @@ const linkredesSociais = document.querySelector(".linkredesSociais");
 const btnWhat = document.querySelectorAll(".btnWhat");
 
 if (contatoWhat) {
-contatoWhat.addEventListener("click", () => {
+  contatoWhat.addEventListener("click", () => {
     window.open(
-    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
         "Olá! Gostaria de fazer o meu pedido.",
-    )}`,
-    "_blank",
+      )}`,
+      "_blank",
     );
-});
-};
+  });
+}
 
 if (contatoWhatbtn) {
-contatoWhatbtn.addEventListener("click", () => {
+  contatoWhatbtn.addEventListener("click", () => {
     window.open(
-    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
         "Olá! Gostaria de fazer o meu pedido.",
-    )}`,
-    "_blank",
+      )}`,
+      "_blank",
     );
-});
-};
+  });
+}
 
 if (linkredesSociais) {
-linkredesSociais.addEventListener("click", () => {
+  linkredesSociais.addEventListener("click", () => {
     window.open(
-    `https://wa.me/5575992456130?text=${encodeURIComponent(
+      `https://wa.me/5575992456130?text=${encodeURIComponent(
         "Olá! Gostaria de saber mais sobre seus serviços.",
-    )}`,
-    "_blank",
+      )}`,
+      "_blank",
     );
-});
-};
+  });
+}
 
 if (contatoWhatpedir) {
-contatoWhatpedir.addEventListener("click", () => {
+  contatoWhatpedir.addEventListener("click", () => {
     window.open(
-    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
         "Olá! Gostaria de fazer o meu pedido.",
-    )}`,
-    "_blank",
+      )}`,
+      "_blank",
     );
-});
-};
+  });
+}
 
-btnWhat.forEach(btn => {
-    btn.addEventListener("click", () => {
-        window.open(
-        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-            "Olá! Gostaria de fazer o meu pedido.",
-        )}`,
-        "_blank",
-        );
-    });
+btnWhat.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    window.open(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+        "Olá! Gostaria de fazer o meu pedido.",
+      )}`,
+      "_blank",
+    );
+  });
 });
 
 // função utilitária para enviar formulários (login ou cadastro)
 async function handleForm(e, mode) {
   e.preventDefault();
   const form = e.currentTarget;
-  const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+  const submitBtn = form.querySelector(
+    'button[type="submit"], input[type="submit"]',
+  );
   const val = (id) => {
     const el = document.getElementById(id);
     return el ? String(el.value).trim() : "";
@@ -92,11 +94,14 @@ async function handleForm(e, mode) {
       const name = val("name");
       const email = val("email");
       const adress = val("adress");
-      if (!name || !email || !adress) throw new Error("Preencha todos os campos do cadastro.");
+      if (!name || !email || !adress)
+        throw new Error("Preencha todos os campos do cadastro.");
       const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRe.test(email)) throw new Error("Email inválido.");
-      if (password.length < 6) throw new Error("A senha deve ter pelo menos 6 caracteres.");
-      if (name.length > 150 || email.length > 150 || adress.length > 300) throw new Error("Campos muito longos.");
+      if (password.length < 6)
+        throw new Error("A senha deve ter pelo menos 6 caracteres.");
+      if (name.length > 150 || email.length > 150 || adress.length > 300)
+        throw new Error("Campos muito longos.");
       url = "http://localhost:3000/usuarios/cadastro";
       payload = { name, email, password, adress };
     } else {
@@ -117,20 +122,40 @@ async function handleForm(e, mode) {
       let msg = `Erro ${resposta.status}`;
       try {
         const errJson = await resposta.json();
-        msg = errJson.error || errJson.mensagem || errJson.resposta || JSON.stringify(errJson);
-      } catch (_){
-        const txt = await resposta.text().catch(()=>null);
+        msg =
+          errJson.error ||
+          errJson.mensagem ||
+          errJson.resposta ||
+          JSON.stringify(errJson);
+      } catch (_) {
+        const txt = await resposta.text().catch(() => null);
         if (txt) msg = txt;
       }
       throw new Error(msg);
     }
 
     const resultado = await resposta.json().catch(() => ({}));
-    const mensagem = resultado.message || resultado.mensagem || resultado.resposta || 'Operação concluída.';
+    const mensagem =
+      resultado.message ||
+      resultado.mensagem ||
+      resultado.resposta ||
+      "Operação concluída.";
     alert(String(mensagem));
 
     if (mode === "login") {
-      // redireciona após login bem‑sucedido
+      const data = resultado;
+
+      if (!data.token) {
+        throw new Error("Token não recebido do servidor.");
+      }
+
+      // 🔐 salva sessão
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // opcional: timestamp da sessão
+      localStorage.setItem("login_at", Date.now());
+
       window.location.href = "index.html";
     } else {
       // após registro, talvez direcionar para login
@@ -152,3 +177,50 @@ const registerForm = document.getElementById("register-form");
 if (registerForm) {
   registerForm.addEventListener("submit", (e) => handleForm(e, "register"));
 }
+
+// ===============================
+// 🔐 CONTROLE DE AUTENTICAÇÃO
+// ===============================
+
+function getToken() {
+  return localStorage.getItem("token");
+}
+
+function getUser() {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+}
+
+function isLogged() {
+  return !!getToken();
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("login_at");
+  window.location.href = "login.html";
+}
+
+// ===============================
+// 🎯 ATUALIZA INTERFACE SE LOGADO
+// ===============================
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!isLogged()) return;
+
+  const user = getUser();
+
+  // exemplo: botão principal vira perfil
+  const btnLogin = document.querySelector(".btnPecaAgora");
+
+  if (btnLogin && user) {
+    btnLogin.textContent = `👤 ${user.name}`;
+    btnLogin.href = "#";
+
+    btnLogin.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (confirm("Deseja sair?")) logout();
+    });
+  }
+});
