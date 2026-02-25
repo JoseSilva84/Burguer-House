@@ -1,4 +1,5 @@
 import { Model, DataTypes } from "sequelize";
+import bcrypt from "bcrypt";
 
 class User extends Model {
     static init(sequelize) {
@@ -31,16 +32,30 @@ class User extends Model {
                 sequelize,
                 tableName: "users",
                 schema: "public",
-
-                // ISSO RESOLVE O ERRO
                 timestamps: true,
                 underscored: true,
-
-                // mapeia corretamente:
                 createdAt: "created_at",
-                updatedAt: "updated_at"
+                updatedAt: "updated_at",
+
+                hooks: {
+                    beforeCreate: async (user) => {
+                        const salt = await bcrypt.genSalt(10);
+                        user.password = await bcrypt.hash(user.password, salt);
+                    },
+                    beforeUpdate: async (user) => {
+                        if (user.changed("password")) {
+                            const salt = await bcrypt.genSalt(10);
+                            user.password = await bcrypt.hash(user.password, salt);
+                        }
+                    }
+                }
             }
         );
+    }
+
+    // 🔐 método para validar senha no login
+    async checkPassword(password) {
+        return bcrypt.compare(password, this.password);
     }
 }
 

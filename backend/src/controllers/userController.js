@@ -56,12 +56,23 @@ export const loginUser = async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ where: { email, password } });
+        const user = await User.findOne({ where: { email } });
+
         if (!user) {
-            return res.status(401).json({ error: "Credenciais inválidas" });
+            return res.status(401).json({ error: "Usuário não encontrado" });
         }
-        // em um app real usaria JWT/sessão e não retornaria a senha
-        res.status(200).json({ message: "Login realizado com sucesso", user: { id: user.id, name: user.name, email: user.email } });
+
+        const passwordMatch = await user.checkPassword(password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ error: "Senha inválida" });
+        }
+
+        res.status(200).json({
+            message: "Login realizado com sucesso",
+            user: { id: user.id, name: user.name, email: user.email }
+        });
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
